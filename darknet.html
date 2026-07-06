@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>𝑫𝑨𝑹𝑲𝑵𝑬𝑻</title>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png">
+    <style>
+        body { background-color: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
+
+        header { text-align: center; padding: 40px; border-bottom: 3px solid #f00; display: flex; justify-content: center; align-items: center; gap: 20px; }
+        header img { height: 100px; }
+        header h1 { color: #f00; font-size: 60px; margin: 0; }
+
+        .clown-row { display: flex; align-items: center; border-bottom: 1px solid #333; padding: 20px 0; gap: 30px; }
+        .stats-col { width: 250px; }
+        .btn-tanlash { background-color: #f00; color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        .img-col { width: 300px; }
+        .img-col img { width: 100%; border: 1px solid #555; }
+        .desc-col { flex: 1; border-left: 2px solid #f00; padding-left: 20px; }
+
+        /* Dark Net Style Modal */
+       /* Dark Net Style Modal */
+        #custom-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0a2a;
+            z-index: 999;
+            overflow-y: auto; /* BU YO'Q EDI, ENDI PASTGA TUSHISH ISHLAYDI */
+            padding: 40px 0;
+            text-align: center;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+
+        #modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #modal-name { color: #f00; font-size: 40px; }
+        #modal-img { width: 500px; border: 2px solid #f00; margin: 20px 0; }
+        #modal-desc { width: 50%; margin: 20px auto; color: #f00; font-weight: bold; text-align: left; }
+        #phone-input { padding: 10px; width: 300px; background: #fff; border: none; }
+        #btn-chaqirish {
+            display: block; margin: 20px auto; background: #0f0; color: #000;
+            padding: 15px 40px; font-size: 20px; border-radius: 20px; cursor: pointer; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="/static/img/clownhe.jpg">
+    <h1>CLOWNS!</h1>
+
+</header>
+
+<div id="clown-list"></div>
+
+<!-- Yangilangan Modal -->
+<div id="custom-modal">
+    <div id="modal-content">
+        <h1 id="modal-name"></h1>
+        <img id="modal-img">
+        <div id="modal-desc">
+            <h3 style="color: #f00;">KO'RSATMALAR:</h3>
+            <p id="desc-text" style="color: #0f0;"></p>
+        </div>
+
+        <p>TELEFON NOMER YOZIB QOLDIRING:</p>
+        <input type="text" id="phone-input">
+        <button id="btn-chaqirish" onclick="confirmAction()">CHAQIRISH;)</button>
+    </div>
+</div>
+
+<script>
+const clowns = [
+        {name: "TRALALA", age: 27, res: 19, boy: 1.86, info: "9 yoshida sirkda yoqolib qolgan. 14 yoshida birinchi marta ruhiy kasalxonaga tushgan. Oqartirilgan clown niqobi bilan tunlari ko'chalarda paydo bo'lgan.", img: "/static/img/0837af092ecce24ea068ab1a882ab46a.jpg"},
+        {name: "IGAR", age: 34, res: 23, boy: 1.65, info: "Bolaligida ota-onasi uni podvalga qamab qo'ygan. 16 yoshida maktabdan g'oyib bo'lgan va oradan 3 yil o'tib boshqa ism bilan topilgan.", img: "/static/img/clown2.jpg"},
+        {name: "GOBLIN", age: 26, res: "MA'LUMOT YO'Q", boy: 1.85, info: "13 yoshida akasining g'oyib bo'lishida gumon qilingan. O'shandan beri faqat clown kiyimida yuradi va odamlarni juda qattiq yomon ko'radi!", img: "/static/img/CLOWN3.png"},
+        {name: "QORA QO'L", age: 42, res: 22, boy: 1.83, info: "Tunda eski attraksion parkida ko'rinadi. Guvohlarning aytishicha, kulgisi uzoqdan eshitiladi, lekin o'zi hech qachon kameraga tushmagan.", img: "/static/img/clown4.jpg"},
+        {name: "BOOMES", age: 32, res: 7, boy: 0.00, info: "Bir vaqtlar bolalar bayramida animator bo'lib ishlagan. Keyinchalik ruhiy holati buzilib, tashlandiq parkda yashay boshlagan.", img: "/static/img/maxresdefault.jpg"},
+        {name: "DAXSHAT", age: 29, res: 26, boy: 1.92, info: "Ko'chma sirk yopilgach, barcha artistlar yo'qolgan. Faqat bitta clown qolgan.", img: "/static/img/clon5.jpg"},
+        {name: "KOBRA", age: "MA'LUMOT YO'Q" , res: 6, boy: 1.74, info: "Bolaligida Jek ismli bola sirkdagi kloun bo'lishni orzu qilardi. Bir kuni sirkdagi baxtsiz hodisada uning oilasi halok bo'ldi. Jek bu voqeani ko'tara olmadi va ruhiy kasal bo'lib qoldi. Yillar o'tib u yuzini kloun bo'yog'i bilan yashirib, odamlardan qasos ola boshladi. Shundan keyin uni 'Qotil Kloun' deb atashdi.", img: "/static/img/clown6.jpg"}
+    ];
+
+    const list = document.getElementById('clown-list');
+    clowns.forEach((c, index) => {
+        const bgColor = (c.name === "KOBRA") ? "#0a0a50" : "#000000";
+
+        list.innerHTML += `
+            <div class="clown-row" style="background-color: ${bgColor}; padding: 20px 0;">
+                <div class="stats-col">
+                    <h2 style="color: #0f0;">${c.name}</h2>
+                    <button class="btn-tanlash" onclick="showModal(${index})">TANLASH →</button>
+                    <p>• YOSH: ${c.age}<br>• BO'YI: ${c.boy} SM<br>• NATIJA: ${c.res}TA ODAM</p>
+                </div>
+                <div class="img-col"><img src="${c.img}"></div>
+                <div class="desc-col"><h3>KO'RSATMALAR:</h3><p>${c.info}</p></div>
+            </div>`;
+    });
+
+    function showModal(index) {
+        const c = clowns[index];
+        document.getElementById('modal-name').innerText = c.name;
+        document.getElementById('modal-img').src = c.img;
+        document.getElementById('desc-text').innerText = c.info;
+        document.getElementById('custom-modal').style.display = 'block';
+    }
+
+    function confirmAction() {
+        const modalContent = document.getElementById('modal-content');
+        modalContent.innerHTML = `
+            <h1 style="color: #f00;">OGOHLANTIRISH</h1>
+            <p style="color: #0f0; font-size: 24px; padding: 20px;">Biz bu clownlarni faqat biza to'xtatshimiz mumkin.</p>
+            <button id="btn-chaqirish" onclick="closeModal()">OK</button>
+        `;
+    }
+
+    function closeModal() {
+        document.getElementById('custom-modal').style.display = 'none';
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
