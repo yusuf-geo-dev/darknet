@@ -1,0 +1,2 @@
+# darknet
+Kirsang o'lasan.
